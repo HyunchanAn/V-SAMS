@@ -1,0 +1,12 @@
+torch
+torchvision
+timm
+streamlit
+albumentations
+fastapi
+uvicorn
+wandb
+numpy
+pandas
+pillow
+scikit-learn

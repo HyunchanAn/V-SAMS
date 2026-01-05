@@ -68,3 +68,21 @@ V-SAMS/
 ├── requirements.txt        # 의존성 목록
 └── README.md               # 프로젝트 설명서
 ```
+
+## 현재 진행 상황 (Current Status)
+이 프로젝트는 **초기 프로토타입 (PoC)** 단계입니다.
+*   **AI 모델**: `models/classifier.py`에 구조는 구현되어 있으나, 가중치는 학습되지 않았습니다(Mock Prediction 사용).
+*   **데이터베이스**: `database.json` 파일을 사용하는 경량 DB 구조이며, Admin 모드에서 관리 가능합니다.
+*   **데이터 수집**: `labeler.py` 툴과 `data_collection_guide.md` 가이드가 준비되어 수집 단계 진입 전입니다.
+
+## 향후 계획 (Roadmap)
+1.  **데이터 구축 Phase**:
+    *   `labeler.py`를 사용하여 클래스당 100장 이상의 데이터 수집.
+    *   다양한 조명 및 각도에서의 촬영 데이터 확보.
+2.  **AI 학습 Phase**:
+    *   수집된 데이터를 `train.py`로 학습시켜 모델 가중치(`.pth`) 생성.
+    *   `app.py`의 Mock Logic을 실제 모델 추론(Inference) 코드로 교체.
+3.  **고도화 Phase**:
+    *   단순 매칭 로직을 점수제(Scoring) 기반의 퍼지 매칭으로 개선.
+    *   JSON DB를 실제 RDBMS로 마이그레이션.
+

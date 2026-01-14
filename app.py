@@ -19,25 +19,39 @@ st.set_page_config(
 )
 
 # Load Model (Cached)
+# Load Model (Cached)
 @st.cache_resource
 def load_model():
     checkpoint_path = 'checkpoints/v_sams_model.pth'
     # Initialize with current label counts
     model = SurfaceClassifier(num_materials=6, num_finishes=7)
     
+    msg = ""
+    status = "mock"
+    
     if os.path.exists(checkpoint_path):
         try:
             model.load_state_dict(torch.load(checkpoint_path, map_location='cpu'))
-            st.toast("✅ Real AI model weights loaded.")
+            msg = "✅ Real AI model weights loaded."
+            status = "real"
         except Exception as e:
-            st.error(f"Error loading weights: {e}")
+            msg = f"Error loading weights: {e}"
+            status = "error"
     else:
-        st.toast("⚠️ Weight file not found. Running in MOCK/Simulation mode.")
+        msg = "⚠️ Weight file not found. Running in MOCK/Simulation mode."
+        status = "mock"
     
     model.eval()
-    return model
+    return model, msg, status
 
-model = load_model()
+model, load_msg, load_status = load_model()
+
+if load_status == "real":
+    st.toast(load_msg)
+elif load_status == "mock":
+    st.toast(load_msg)
+else:
+    st.error(load_msg)
 
 # --- Prediction Logic ---
 def predict(image, image_name):

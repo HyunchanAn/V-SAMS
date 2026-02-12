@@ -57,10 +57,19 @@ python -m streamlit run labeler.py
 * 기능: 이미지를 드래그 앤 드롭으로 업로드하고, 재질/마감 속성을 선택하면 자동으로 폴더(`dataset/train/Material_Finish`)에 분류하여 저장합니다. 한글 파일명 보안 처리가 되어 있습니다.
 
 ### 3. 모델 학습 (Training)
-수집된 데이터를 기반으로 모델을 학습시킵니다.
+수집된 데이터를 기반으로 모델을 학습시킵니다. 물리적 데이터가 부족한 경우, 오픈 데이터셋(MINC, DTD)을 활용하여 부트스트래핑할 수 있습니다.
+
+**데이터 부트스트래핑 (Data Bootstrapping)**:
+MINC(재질) 및 DTD(텍스처) 데이터셋을 자동으로 다운로드하고 V-SAMS 구조에 맞게 매핑합니다.
+```bash
+python utils/download_datasets.py
+```
+
+**학습 실행**:
 ```bash
 python train.py
 ```
+* M2 Pro (Apple Silicon) MPS 가속을 자동으로 활용하여 고속 학습을 수행합니다.
 * Albumentations를 통한 데이터 증강과 Multi-task 학습을 수행합니다.
 
 ### 4. 통합 예측 파이프라인 (Integration)
@@ -101,8 +110,8 @@ V-SAMS/
 ```
 
 ## 현재 진행 상황 (Current Status)
-이 프로젝트는 "발사대(Launchpad)" 정비가 완료된 단계입니다.
-- AI 모델: `models/classifier.py`에 특징 추출 모드 및 Multi-Head 구조가 완성되었습니다.
-- 학습 시스템: 실제 데이터를 즉시 학습할 수 있는 `train.py`가 준비되었습니다.
-- 데이터 수집: `labeler.py`를 통해 안전하게 데이터를 축적할 준비가 끝났습니다.
-- 통합 준비: 타 모듈과의 데이터 융합을 위한 인터페이스가 정의되었습니다.
+이 프로젝트는 "초기 지능 확보 (Active Intelligence)" 단계입니다.
+- AI 모델: ResNet50 기반 Multi-Head 모델이 MINC-2500 및 DTD 데이터셋(약 7,400장)으로 선행 학습되었습니다.
+- 환경 최적화: Apple M2 Pro, MPS 가속 환경에서 안정적인 학습 및 추론이 가능합니다.
+- One-Shot Learning: Metal/Hairline과 같은 특정 조합 데이터 부족 문제를 해결하기 위해, 현장 데이터 증강 학습 로직이 적용되었습니다.
+- UI 연동: 학습된 모델(`v_sams_model.pth`)이 존재할 경우 자동으로 로드되어 실제 분석 결과를 제공합니다.

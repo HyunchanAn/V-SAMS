@@ -76,10 +76,12 @@ if uploaded_files:
     col1, col2 = st.columns(2)
     with col1:
         st.markdown("**모재 (Material)**")
-        selected_material = st.radio("Material", MATERIALS, label_visibility="collapsed")
+        # 기본값: Metal (index 0)
+        selected_material = st.radio("Material", MATERIALS, index=0, label_visibility="collapsed")
     with col2:
         st.markdown("**마감 (Finish)**")
-        selected_finish = st.radio("Finish", FINISHES, label_visibility="collapsed")
+        # 기본값: Hairline (index 2) - 금속 표면은 주로 헤어라인인 경우가 많음
+        selected_finish = st.radio("Finish", FINISHES, index=2, label_visibility="collapsed")
     
     target_class = get_class_name(selected_material, selected_finish)
     st.info(f"📂 저장될 폴더명: **dataset/train/{target_class}/**")
